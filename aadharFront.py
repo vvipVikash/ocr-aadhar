@@ -16,13 +16,8 @@ class AadharIdFrontReader(object):
         self.points = []
         self.cropped_qr = None
         self.data = None
-        self.x = None
-        self.y = None
-        self.w = None
-        self.h = None
-        self.barcodeOutput = {}
-        self.personalised = {}
-        self.output = {}
+        self.x, self.y. self.w, self.h = None, None, None, None
+        self.barcodeOutput, self.personalised, self.output = {}, {}, {}
 
     def start(self, img):
         self.img = img
@@ -41,10 +36,6 @@ class AadharIdFrontReader(object):
         else:
             self.manualAadharFront()
             return self.output
-
-    def showImage(self, imgg):
-        cv2.imshow("Show", imgg)
-        cv2.waitKey(0)
 
     def imagePreprocessing(self):
 
@@ -82,11 +73,7 @@ class AadharIdFrontReader(object):
 
         """Compute the rotated bounding box of the largest contour and set the co-ordinates"""
         rect = cv2.minAreaRect(c)
-        x, y, w, h = cv2.boxPoints(rect)
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        self.x, self.y, self.w, self.h = cv2.boxPoints(rect)
 
     def cropQr(self):
 
@@ -120,8 +107,7 @@ class AadharIdFrontReader(object):
     def dataBeautify(self):
         for items in self.data:
             dataDecoded = items.data.decode('utf-8')
-            new = ""
-            flag = 0
+            new, flag = "", 0
             for i in range(len(dataDecoded)):
                 new += dataDecoded[i]
                 if dataDecoded[i] == '"':
@@ -178,14 +164,11 @@ class AadharIdFrontReader(object):
             if dob:
                 self.output["dob"] = dob.group(0)
                 if "Father" in results[loop_no - 1][1]:
-                    print("Father's Name is in Front Side in single line.")
                     data = results[loop_no - 1][1].replace('Father', '')
                     self.output["gname"] = data
                 elif "Father" in results[loop_no - 2][1]:
-                    print("Father's Name is in front side in seperate line.")
                     self.output["gname"] = results[loop_no - 1][1]
-                else:
-                    print("Father's Name not found in front side")
+
 
             # =====================================================================================================
             
