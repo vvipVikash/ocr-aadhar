@@ -213,7 +213,7 @@ class AadharIdFrontReader(object):
 
             # =============END OF CODE===================================================================        
 
-assigning = QRDecoder()
+assigning = AadharIdFrontReader()
 image = cv2.imread("path/image_name.jpg")
-testing = assigning.start(image)
-print(testing)
+return = assigning.start(image)
+print(return)
